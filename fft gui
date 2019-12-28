@@ -1,0 +1,310 @@
+function varargout = FFTGUI(varargin)
+% FFTGUI MATLAB code for FFTGUI.fig
+%      FFTGUI, by itself, creates a new FFTGUI or raises the existing
+%      singleton*.
+%
+%      H = FFTGUI returns the handle to a new FFTGUI or the handle to
+%      the existing singleton*.
+%
+%      FFTGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in FFTGUI.M with the given input arguments.
+%
+%      FFTGUI('Property','Value',...) creates a new FFTGUI or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before FFTGUI_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to FFTGUI_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help FFTGUI
+
+% Last Modified by GUIDE v2.5 26-Nov-2019 21:47:45
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @FFTGUI_OpeningFcn, ...
+                   'gui_OutputFcn',  @FFTGUI_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before FFTGUI is made visible.
+function FFTGUI_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to FFTGUI (see VARARGIN)
+
+% Choose default command line output for FFTGUI
+handles.output = hObject;
+
+%时间不动，有错误，暂时不改
+% % handles.ht=timer;         %建立一个timer对象
+% % set(handles.ht,'ExecutionMode','FixedRate');
+% % set(handles.ht,'Period',1);   %定时周期为一秒   
+% % handles.ht=timer('TimerFcn',{@dispnow,handles});%定时周期到达之后执行TimerFcn的回调函数
+handles.ht=timer('TimerFcn',{@dispnow,handles},'executionmode','fixedrate','period',1); 
+start(handles.ht);  %生成定时器
+
+% Update handles structure
+guidata(hObject, handles);        %为了在后面使用timer对象，使用guidata这种数据共享机制
+
+% UIWAIT makes FFTGUI wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = FFTGUI_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+function dispnow(hObject,eventdata,handles) %这种方式和guide默认所生成的回调函数格式是一致的，
+                                                                            %这样将handles结构体作为输入
+
+% str=datestr(now, 'dd-mmm-yyyy HH:MM:SS:FFF');
+% set(handles.disptime, 'string',str);
+set(handles.disptime,'String',datestr(now));        %datestr(now)获得当前时间函数
+
+% -------------------------------------------------------------------
+
+
+function N_Callback(hObject, eventdata, handles)
+% hObject    handle to N (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of N as text
+%        str2double(get(hObject,'String')) returns contents of N as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function N_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to N (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function M_Callback(hObject, eventdata, handles)
+% hObject    handle to M (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of M as text
+%        str2double(get(hObject,'String')) returns contents of M as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function M_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to M (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+%A=str2num(get(handles.N,'string'));
+%B=str2num(get(handles.M,'string'));
+%S=sum(A.*B)/sum(B);
+%set(handles.edit5,'string',num2str(S));
+% xn = inputdlg({'输入矩阵'},'输入',1);%另一种界面参数输入
+% xn = str2num(xn{1});
+xn=  str2num(get(handles.xn,'string'));
+N =  str2num(get(handles.N,'string'));%变换区间
+%xn=[1,1,1,1];             %要转换的序列
+M = str2num(get(handles.M,'string')); %转换级数
+tic;
+B = fft(xn,N);   %matlab内置fft变换，用于对比       
+time1=toc;
+axes(handles.axes1);         %内置fft变换图像 
+[a1,b1]=size(B);
+o1=1:b1;            %内置fft变换坐标 
+stem(o1,abs(B),'.');
+title('Original ','color','b');
+
+tic;
+H=ditfft(xn,M);  %手工编写的difft2函数
+time2=toc;
+axes(handles.axes2);        %绘制手工编写的fft图像
+[a1,b2]=size(H);
+o2=1:b2;         %ditfft2变换坐标         
+stem(o2,abs(H),'.');
+title('Home-made ','color','b')
+fprintf('version: tic --toc :  original fft uses time %15.5f.\n ',time1);
+fprintf('version: tic --toc :  home-made fft uses time %15.5f.\n ',time2);
+%  o = num2str(time1);
+%  h = num2str(time2);
+set(handles.edit1,'string',mat2str(time1));
+set(handles.edit2,'string',mat2str(time2));
+
+
+function xn_Callback(hObject, eventdata, handles)
+% hObject    handle to xn (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of xn as text
+%        str2double(get(hObject,'String')) returns contents of xn as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function xn_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to xn (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on mouse press over axes background.
+function axes1_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to axes1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --- Executes on mouse press over axes background.
+function axes2_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to axes2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% 重置清空图片 
+cla(handles.axes1,'reset');
+cla(handles.axes2,'reset');
+% 重置清空动态txt的文字 
+set(handles.M,'string','');
+set(handles.N,'string','');
+set(handles.xn,'string','');
+set(handles.edit1,'string','');
+set(handles.edit2,'string','');
+
+% --- Executes on button press in pushbutton3.
+function pushbutton3_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+%close%方法一
+options.Resize='on';
+options.WindowStyle='normal';
+options.Interpreter='tex';
+selection=questdlg(['是否关闭',get(gcf,'Name'),'窗口？'], ...
+['Close ',get(gcf,'Name'),'...'],'是','否','是');%当选择退出按钮时，得出一个问是否确定关闭的框 
+if strcmp(selection,'否') 
+   return; 
+   else 
+     clc; %当选择关闭时，清空所有matla输入面上的所有错误信息，同时关闭图像窗口 
+     clear all; 
+     close all;
+%      close(gcf); %delete(gcf)
+% %      close(pushbutton4_Callback);
+% %      close(gco);
+ end
+
+
+% --- Executes on button press in pushbutton4.
+function pushbutton4_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+%set(handles.pushbutton4,'String', {'电信172宣浩     201704054232' '电信172赵佳顺 201704054210' '电信172郑少鹏 201704054216'});
+
+% 改变msgbox属性
+% 寻找句柄，改变属性
+hs = msgbox({'电信172宣浩     201704054232' '电信172赵佳顺 201704054210' '电信172郑少鹏 201704054216'},'成员信息', 'success');
+ht = findobj(hs, 'Type', 'text');
+set(ht, 'FontSize', 10, 'Unit','normal');
+% 改变对话框大小
+set(hs, 'Resize', 'on'); % 手动改变，或者用
+% set(hs, 'Position', [100 100 100 100]); % 自动设置
+%  h = msgbox({'电信172宣浩     201704054232' '电信172赵佳顺 201704054210' '电信172郑少鹏 201704054216'},'成员信息',options);
+
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit2_Callback(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit2 as text
+%        str2double(get(hObject,'String')) returns contents of edit2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
