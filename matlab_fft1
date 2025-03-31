@@ -1,3 +1,5 @@
+% 测试git checkout拉取同门文件是否会覆盖
+
 function H= ditfft( xn,M )
 %DIT-FFT快速傅里叶变换程序
 %程序名称：ditfft
